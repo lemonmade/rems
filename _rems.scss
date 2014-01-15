@@ -1,0 +1,125 @@
+// FUNCTION ----
+// number
+
+// PURPOSE ----
+// Returns a unitless version of the provided number.
+
+// IN ----
+// $number     number. Number, including unit.
+
+// OUT ----
+// Number, excluding unit.
+@function number($number) {
+    @return $number / ($number * 0 + 1);
+}
+
+
+// FUNCTION ----
+// rem-to-px
+
+// PURPOSE ----
+// Returns the number of px for a given rem size and base (document) size.
+
+// IN ----
+// $rem         number. Target size in rem.
+// $baseline    number. Base (document) font size.
+// $unit        boolean (optional). True value will append px units.
+
+// OUT ----
+// px units (with optional unit identifier) as a number.
+@function rem-to-px($rem, $baseline, $unit: false) {
+    $number: number($rem) * number($baseline);
+    @return if($unit, number * 1px, $number)
+}
+
+
+// FUNCTION ----
+// px-to-rem
+
+// PURPOSE ----
+// Returns the number of rem for a given px size and base (document) size.
+
+// IN ----
+// $px          number. Target size in pixels.
+// $baseline    number. Base (document) font size.
+// $unit        boolean (optional). True value will append rem units.
+
+// OUT ----
+// rem units (with optional unit identifier) as a number.
+@function px-to-rem($px, $baseline, $unit: false) {
+    $number: number($px) / number($baseline);
+    @return if($unit, $number * 1rem, $number);
+}
+
+
+// FUNCTION ----
+// px-to-em
+
+// PURPOSE ----
+// Returns the number of em for a given size and parent size.
+
+// IN ----
+// $px          number. Target size in pixels.
+// $parent      number. Relevant parent size in pixels.
+// $unit        boolean (optional). True value will append em units.
+
+// OUT ----
+// em units (with optional unit identifier) as a number.
+@function px-to-em($px, $parent, $unit: false) {
+    @return if($unit, px-to-rem($px, $parent) * 1em, px-to-rem($px, $parent));
+}
+
+
+// FUNCTION ----
+// rems
+
+// PURPOSE ----
+// Creates rem size declarations and fallback px (and, optionally, em) declarations.
+
+// IN ----
+// $property    string. The property you would like to make the rules for.
+// $px          number or list. Target size (or sizes, for compound properties) in pixels.
+// $relative    number. Relevant parent size in pixels or rem units (assuemes px if no units).
+// $base-font   number. Base (document) font size to use in calculations.
+@mixin rems($property, $px, $relative: null, $base-font: 16px) {
+    $base-font: number($base-font);
+    $rems:      ();
+    $pxs:       ();
+    $ems:       ();
+
+    // If provided a parent size, convert that size to px.
+    // em/ rem will both be treated as rem as it's impossible
+    // to guess the cascade if em units were used.
+    // Therefore, user must provide the **rem** or **px** value of the parent.
+    @if $relative != null {
+        $unit: unit($relative);
+        @if $unit == "em" or $unit == "rem" {
+            $relative: number($relative) * $base-font;
+        } @else if $unit == "px" {
+            $relative: number($relative);
+        }
+    }
+
+    @each $num in $px {
+
+        // Get the current number in the list
+        $cleanNum: $num;
+        @if not unitless($num * 1) { $cleanNum: number($num); }
+
+        // Creates the rem and px representations
+        $rems: append($rems, #{px-to-rem($cleanNum, $base-font)}rem);
+        $pxs: append($pxs, #{$cleanNum}px);
+
+        // Creates the em representation, if a parent size was given
+        @if $relative != null {
+            $ems: append($ems, #{px-to-rem($cleanNum, $relative)}em);
+        }
+
+    }
+
+    // Creates the actual properties
+    #{$property}: #{$pxs};
+    @if $relative != null { #{$property}: #{$ems}; }
+    #{$property}: #{$rems};
+
+}
