@@ -6,7 +6,7 @@ This project is a collection of [SASS](http://sass-lang.com) functions and mixin
 
 ### Create `rem` styles with `px` fallback
 
-```(sass)
+```scss
 @import "_rems.scss";
 
 .big-header {
@@ -17,7 +17,7 @@ This project is a collection of [SASS](http://sass-lang.com) functions and mixin
 
 Outputs:
 
-```(css)
+```css
 .big-header {
     font-size: 50px;
     font-size: 3.125rem; // baseline defaults to 16px, so 50px / 16px
@@ -26,7 +26,7 @@ Outputs:
 
 ### Create `rem` styles with `px` and `em` fallbacks
 
-```(sass)
+```scss
 @import "_rems.scss";
 
 .parent {
@@ -40,7 +40,7 @@ Outputs:
 
 Outputs:
 
-```(css)
+```css
 .parent {
     font-size: 20px;
     font-size: 1.25em;
@@ -59,7 +59,7 @@ The definition of `em` sizes requires you to provide the font-size of the parent
 
 ### Common conversions
 
-```(sass)
+```scss
 number(30em);               // returns 30
 px-to-em(30px, 20px, true); // returns 1.5em
 px-to-rem(20px, 16px);      // returns 1.25
