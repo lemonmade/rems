@@ -34,6 +34,7 @@ Outputs:
 
     .child {
         @include rems(font-size, 30px, 20px);
+        @include rems(margin, 30px 30px auto 10%, 30px);
     }
 }
 ```
@@ -51,6 +52,9 @@ Outputs:
     font-size: 30px;
     font-size: 1.5em; /* 30px (target) / 20px (parent size) */
     font-size: 1.875rem; /* 30px (target) / 16px (default baseline) */
+    margin: 30px 30px auto 10%;
+    margin: 1em 1em auto 10%; /* 30px (target) / 30px ("parent" size) */
+    margin: 1.875rem 1.875rem auto 10%; /* 30px (target) / 16px (default baseline) */
 }
 ```
 
