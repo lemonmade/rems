@@ -104,15 +104,28 @@
 
         // Get the current number in the list
         $cleanNum: $num;
-        @if not unitless($num * 1) { $cleanNum: number($num); }
+        @if $num != auto {
+            @if not unitless($num * 1) { $cleanNum: number($num); }
+        }
 
         // Creates the rem and px representations
-        $rems: append($rems, #{px-to-rem($cleanNum, $base-font)}rem);
-        $pxs: append($pxs, #{$cleanNum}px);
+        // If the amount given is not a px value (i.e., % or vh), just append it
+        @if $num != auto and (unit($num) == "" or unit($num) == "px") {
+            $rems: append($rems, #{px-to-rem($cleanNum, $base-font)}rem);
+            $pxs: append($pxs, #{$cleanNum}px);
 
-        // Creates the em representation, if a parent size was given
-        @if $relative != null {
-            $ems: append($ems, #{px-to-rem($cleanNum, $relative)}em);
+            // Creates the em representation, if a parent size was given
+            @if $relative != null {
+                $ems: append($ems, #{px-to-rem($cleanNum, $relative)}em);
+            }
+        } @else {
+            $rems: append($rems, $num);
+            $pxs: append($pxs, $num);
+
+            // Creates the em representation, if a parent size was given
+            @if $relative != null {
+                $ems: append($ems, $num);
+            }
         }
 
     }
