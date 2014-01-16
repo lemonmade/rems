@@ -60,15 +60,9 @@ The definition of `em` sizes requires you to provide the font-size of the parent
 ### Common conversions
 
 ```scss
-// returns 30
+// Return 30, 1.5em, 1.25, and 40px, respectively
 number(30em);
-
-// returns 1.5em
 px-to-em(30px, 20px, true);
-
-// returns 1.25
 px-to-rem(20px, 16px);
-
-// returns 40px
 rem-to-px(2.5, 16, true);
 ```
