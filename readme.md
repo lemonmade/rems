@@ -20,7 +20,7 @@ Outputs:
 ```css
 .big-header {
     font-size: 50px;
-    font-size: 3.125rem; // baseline defaults to 16px, so 50px / 16px
+    font-size: 3.125rem; /* baseline defaults to 16px, so 50px / 16px */
 }
 ```
 
@@ -49,8 +49,8 @@ Outputs:
 
 .parent .child {
     font-size: 30px;
-    font-size: 1.5em; // 30px (target) / 20px (parent size)
-    font-size: 1.875rem; // 30px (target) / 16px (default baseline)
+    font-size: 1.5em; /* 30px (target) / 20px (parent size) */
+    font-size: 1.875rem; /* 30px (target) / 16px (default baseline) */
 }
 ```
 
